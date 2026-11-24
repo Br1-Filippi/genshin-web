@@ -1,0 +1,25 @@
+# Plantilla procesada por la imagen oficial de nginx (envsubst) al iniciar.
+# API_HOST y API_PORT indican el contenedor de la API dentro de la red de Docker.
+server {
+    listen 80;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # DNS interno de Docker: resuelve el nombre del contenedor de la API en cada
+    # petición, así nginx arranca aunque la API todavía no esté levantada.
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $api_upstream http://${API_HOST}:${API_PORT};
+
+    location /api/ {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass $api_upstream;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
