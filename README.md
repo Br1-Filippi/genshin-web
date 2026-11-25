@@ -36,5 +36,5 @@ docker run -d --name genshin-web-prod --network genshin-prod \
 
 - `main`: rama base.
 - `dev`: integración.
-- `feature/**`: desarrollo; las construye el job de Jenkins `genshin-web_dev` (puerto 3001).
-- `release/**`: versiones a producción; las construye el job `genshin-web_prod` (puerto 3000).
+- `feature/**`: desarrollo; las construye el job de Jenkins `genshin_web_dev` (puerto 3001).
+- `release/**`: versiones a producción; las construye el job `genshin_web_prod` (puerto 3000).
